@@ -1,6 +1,17 @@
 import React, { lazy, Suspense } from 'react';
 
-const CodeBlock = lazy(() => import('./CodeBlock'));
+// Lazy load with error boundary
+const CodeBlock = lazy(() => 
+  import('./CodeBlock').catch(() => {
+    console.error('Failed to load CodeBlock component');
+    // Return a fallback component on error
+    return { default: ({ children, className = '' }) => (
+      <code className={`block bg-gray-100 dark:bg-gray-800 p-3 rounded-lg overflow-x-auto my-4 text-gray-800 dark:text-gray-200 text-sm font-mono whitespace-pre-wrap break-words ${className}`}>
+        {children}
+      </code>
+    )};
+  })
+);
 
 const CodeBlockFallback = ({ children, className = '' }) => (
   <code className={`block bg-gray-100 dark:bg-gray-800 p-3 rounded-lg overflow-x-auto my-4 text-gray-800 dark:text-gray-200 text-sm font-mono whitespace-pre-wrap break-words ${className}`}>
