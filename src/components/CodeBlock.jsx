@@ -90,7 +90,7 @@ const CodeBlock = memo(({
         language={language || 'text'}
         style={isDarkMode ? oneDark : oneLight}
         showLineNumbers={showLineNumbers}
-        PreTag="div"
+        PreTag="pre"
         customStyle={{
           margin: 0,
           borderRadius: '0.5rem',
