@@ -55,8 +55,8 @@ const CodeBlock = memo(({
 
   // Full code block rendering - use a span wrapper to avoid div in p issue
   const codeBlock = (
-    <span className="block relative group my-4">
-      <span className="absolute right-2 top-2 z-10 block">
+    <div className="relative group my-4">
+      <span className="absolute right-2 top-2 z-10">
         <button
           onClick={handleCopy}
           className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 px-2 py-1 text-xs bg-gray-700 dark:bg-gray-600 text-white rounded hover:bg-gray-600 dark:hover:bg-gray-500 flex items-center gap-1"
