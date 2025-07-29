@@ -282,7 +282,13 @@ export function preprocessMarkdown(content) {
   // Convert 'text' to `text` (but not contractions or possessives)
   // Matches 'word' or 'multiple words' but not don't, won't, it's, etc.
   // Also avoids matching quotes at the start/end of lines to prevent issues with quoted speech
-  processed = processed.replace(/(?<![a-zA-Z])'([^']+?)'(?![a-zA-Z])/g, '`$1`');
+  processed = processed.replace(/(^|[^a-zA-Z])'([^']+?)'([^a-zA-Z]|$)/g, (match, before, content, after) => {
+    // Ensure the match is not part of a contraction or possessive
+    if (/\w'/.test(match)) {
+      return match; // Skip replacement for contractions/possessives
+    }
+    return `${before}\`${content}\`${after}`;
+  });
 
   // Restore code blocks
   codeBlocks.forEach((block, i) => {
