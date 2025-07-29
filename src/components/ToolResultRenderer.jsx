@@ -13,6 +13,7 @@ const ToolResultRenderer = memo(({
   toolResult,
   showRawParameters = false,
   autoExpandTools = true,
+  truncationLimit = 5000,
   className = ''
 }) => {
   // Extract meaningful content from tool result with error handling
