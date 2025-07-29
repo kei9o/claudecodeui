@@ -33,7 +33,7 @@ const ToolResultRenderer = memo(({
   // Sanitize and prepare content for rendering
   const { primaryContent, contentType, metadata, fallback } = extractedContent;
   const sanitizedContent = sanitizeContent(primaryContent);
-  const { content: displayContent, isTruncated, fullLength } = truncateContent(sanitizedContent, 10000);
+  const { content: displayContent, isTruncated, fullLength } = truncateContent(sanitizedContent, truncationLimit);
 
   // Special handling for TodoWrite tool
   if (toolName === 'TodoWrite') {
