@@ -19,6 +19,7 @@ function ToolsSettings({ isOpen, onClose }) {
 
   // MCP server management state
   const [mcpServers, setMcpServers] = useState([]);
+  const [mcpServersLoading, setMcpServersLoading] = useState(true);
   const [showMcpForm, setShowMcpForm] = useState(false);
   const [editingMcpServer, setEditingMcpServer] = useState(null);
   const [mcpFormData, setMcpFormData] = useState({
@@ -63,6 +64,7 @@ function ToolsSettings({ isOpen, onClose }) {
 
   // MCP API functions
   const fetchMcpServers = async () => {
+    setMcpServersLoading(true);
     try {
       const token = localStorage.getItem('auth-token');
       
@@ -115,6 +117,8 @@ function ToolsSettings({ isOpen, onClose }) {
       }
     } catch (error) {
       console.error('Error fetching MCP servers:', error);
+    } finally {
+      setMcpServersLoading(false);
     }
   };
 
@@ -835,7 +839,14 @@ function ToolsSettings({ isOpen, onClose }) {
 
               {/* MCP Servers List */}
               <div className="space-y-2">
-                {mcpServers.map(server => (
+                {mcpServersLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="flex items-center gap-3 text-gray-500 dark:text-gray-400">
+                      <div className="w-5 h-5 animate-spin rounded-full border-2 border-purple-600 border-t-transparent" />
+                      <span>Loading MCP servers...</span>
+                    </div>
+                  </div>
+                ) : mcpServers.map(server => (
                   <div key={server.id} className="bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -1000,7 +1011,7 @@ function ToolsSettings({ isOpen, onClose }) {
                     </div>
                   </div>
                 ))}
-                {mcpServers.length === 0 && (
+                {!mcpServersLoading && mcpServers.length === 0 && (
                   <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                     No MCP servers configured
                   </div>
