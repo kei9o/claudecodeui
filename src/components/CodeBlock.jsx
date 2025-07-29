@@ -6,16 +6,16 @@ import { useTheme } from '../contexts/ThemeContext';
 /**
  * Enhanced code block component with syntax highlighting and copy functionality
  */
-const CodeBlock = memo(({ 
-  language = '', 
-  children, 
+const CodeBlock = memo(({
+  language = '',
+  children,
   inline = false,
   showLineNumbers = false,
   className = ''
 }) => {
   const [copied, setCopied] = useState(false);
   const { isDarkMode } = useTheme();
-  
+
   const code = String(children).replace(/\n$/, '');
 
   const handleCopy = useCallback(async () => {
@@ -79,7 +79,7 @@ const CodeBlock = memo(({
           )}
         </button>
       </span>
-      
+
       {language && (
         <span className="absolute left-3 top-2 text-xs text-gray-400 dark:text-gray-500 font-mono block">
           {language}
@@ -121,8 +121,8 @@ export const MarkdownCodeBlock = ({ node, inline, className, children, ...props 
   const language = match ? match[1] : '';
 
   return (
-    <CodeBlock 
-      language={language} 
+    <CodeBlock
+      language={language}
       inline={inline}
       className={className}
       {...props}

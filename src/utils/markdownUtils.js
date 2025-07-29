@@ -15,7 +15,7 @@ export function detectContentType(content) {
   const trimmed = content.trim();
 
   // Check for JSON
-  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || 
+  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) ||
       (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
     try {
       JSON.parse(trimmed);
@@ -50,11 +50,11 @@ export function detectContentType(content) {
  */
 export function extractToolContent(toolName, toolInput, toolResult) {
   // Priority: toolResult > meaningful toolInput content > raw parameters
-  
+
   // First, try to extract from tool result
   if (toolResult && typeof toolResult === 'string' && toolResult.trim()) {
     const contentType = detectContentType(toolResult);
-    
+
     // Special handling for specific tools
     if (toolName === 'exit_plan_mode' || toolName === 'ExitPlanMode') {
       try {
@@ -98,7 +98,7 @@ export function extractToolContent(toolName, toolInput, toolResult) {
   if (toolInput && typeof toolInput === 'string') {
     try {
       const input = JSON.parse(toolInput);
-      
+
       // ExitPlanMode tool input handling
       if ((toolName === 'exit_plan_mode' || toolName === 'ExitPlanMode') && input.plan) {
         return {
@@ -123,7 +123,7 @@ export function extractToolContent(toolName, toolInput, toolResult) {
         return {
           contentType: 'text',
           primaryContent: input.content,
-          metadata: { 
+          metadata: {
             language: detectLanguageFromPath(input.file_path || input.path),
             filePath: input.file_path || input.path
           }
@@ -135,7 +135,7 @@ export function extractToolContent(toolName, toolInput, toolResult) {
         return {
           contentType: 'mixed',
           primaryContent: JSON.stringify(input.edits, null, 2),
-          metadata: { 
+          metadata: {
             filePath: input.file_path || input.path,
             editCount: input.edits.length
           }
@@ -147,7 +147,7 @@ export function extractToolContent(toolName, toolInput, toolResult) {
         return {
           contentType: 'text',
           primaryContent: toolInput, // Will be replaced by actual content in result
-          metadata: { 
+          metadata: {
             filePath: input.file_path,
             language: detectLanguageFromPath(input.file_path)
           }
@@ -252,8 +252,8 @@ export function truncateContent(content, maxLength = 5000) {
   }
 
   const truncated = content.substring(0, maxLength);
-  return { 
-    content: truncated + '...', 
+  return {
+    content: truncated + '...',
     isTruncated: true,
     fullLength: content.length
   };
@@ -272,23 +272,23 @@ export function preprocessMarkdown(content) {
   // Split content by code blocks to preserve them
   const codeBlockPattern = /```[\s\S]*?```/g;
   const codeBlocks = content.match(codeBlockPattern) || [];
-  
+
   // Replace code blocks with placeholders
   let processed = content;
   codeBlocks.forEach((block, i) => {
     processed = processed.replace(block, `__CODE_BLOCK_${i}__`);
   });
-  
+
   // Convert 'text' to `text` (but not contractions or possessives)
   // Matches 'word' or 'multiple words' but not don't, won't, it's, etc.
   // Also avoids matching quotes at the start/end of lines to prevent issues with quoted speech
   processed = processed.replace(/(?<![a-zA-Z])'([^']+?)'(?![a-zA-Z])/g, '`$1`');
-  
+
   // Restore code blocks
   codeBlocks.forEach((block, i) => {
     processed = processed.replace(`__CODE_BLOCK_${i}__`, block);
   });
-  
+
   return processed;
 }
 
