@@ -727,7 +727,7 @@ const MessageComponent = memo(({ message, index, prevMessage, createDiff, onFile
             ) : (
               <div className="text-sm text-gray-700 dark:text-gray-300">
                 {message.type === 'assistant' ? (
-                  <div className="prose prose-sm max-w-none dark:prose-invert prose-gray [&_code]:!bg-transparent [&_code]:!p-0">
+                  <div className="prose prose-sm max-w-none dark:prose-invert prose-gray">
                     <ReactMarkdown
                       components={{
                         code: MarkdownCodeBlock,

@@ -105,7 +105,7 @@ const CodeBlock = memo(({
       >
         {code}
       </SyntaxHighlighter>
-    </span>
+    </div>
   );
 
   return codeBlock;
